@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using CompanyStructure.Data;
+using CompanyStructure.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 var connString = builder.Configuration.GetConnectionString("CompanyDbConnection");
 builder.Services.AddDbContext<CompanyDBContext>(opt =>
     opt.UseSqlServer(connString));
+
+builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

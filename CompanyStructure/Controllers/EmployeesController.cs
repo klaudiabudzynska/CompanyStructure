@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CompanyStructure.Data;
+using CompanyStructure.Models.Employee;
+using AutoMapper;
+using System.Collections;
 
 namespace CompanyStructure.Controllers
 {
@@ -14,20 +17,24 @@ namespace CompanyStructure.Controllers
     public class EmployeesController : ControllerBase
     {
         private readonly CompanyDBContext _context;
+        private readonly IMapper _mapper;
 
-        public EmployeesController(CompanyDBContext context)
+        public EmployeesController(CompanyDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<EmployeeReadOnlyDto>>> GetEmployees()
         {
-            return Ok(await _context.Employees.ToListAsync());
+            var employees = await _context.Employees.ToListAsync();
+            var employeeDtos = _mapper.Map<IEnumerable<EmployeeReadOnlyDto>>(employees);
+            return Ok(employeeDtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Employee>> GetEmployee(int id)
+        public async Task<ActionResult<EmployeeReadOnlyDto>> GetEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);
 
@@ -36,17 +43,26 @@ namespace CompanyStructure.Controllers
                 return NotFound();
             }
 
-            return Ok(employee);
+            var employeeDto = _mapper.Map<EmployeeReadOnlyDto>(employee);
+            return Ok(employeeDto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, Employee employee)
+        public async Task<IActionResult> PutEmployee(int id, EmployeeUpdateDto employeeDto)
         {
-            if (id != employee.Id)
+            if (id != employeeDto.Id)
             {
                 return BadRequest();
             }
 
+            var employee = await _context.Employees.FindAsync(id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(employeeDto, employee);
             _context.Entry(employee).State = EntityState.Modified;
 
             try
@@ -69,8 +85,9 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Employee>> PostEmployee(Employee employee)
+        public async Task<ActionResult<EmployeeCreateDto>> PostEmployee(EmployeeCreateDto employeeDto)
         {
+            Employee employee = _mapper.Map<Employee>(employeeDto);
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
 
