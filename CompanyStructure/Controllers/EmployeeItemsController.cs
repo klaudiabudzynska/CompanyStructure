@@ -24,8 +24,8 @@ namespace CompanyStructure.Controllers
         public async Task<IActionResult> GetEmployees()
         {
             return _context.EmployeeItems != null ?
-                        View(await _context.EmployeeItems.ToListAsync()) :
-                        Problem("Entity set 'EmployeeContext.EmployeeItems'  is null.");
+                View(await _context.EmployeeItems.ToListAsync()) :
+                Problem("Entity set 'EmployeeContext.EmployeeItems'  is null.");
         }
 
         [HttpGet("{id}")]

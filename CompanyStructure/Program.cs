@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using CompanyStructure.Models;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,19 +10,29 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<EmployeeContext>(opt =>
     opt.UseSqlServer("Server=.;Database=Company;MultipleActiveResultsSets=True;Trusted_Connection=True;"));
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen();
+
+builder.Host.UseSerilog((ctx, lc) =>
+    lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
+
+builder.Services.AddCors(opt =>
+    opt.AddPolicy("AllowAll", 
+        b => b.AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowAnyOrigin()));
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
-    //app.UseSwagger();
-    //app.UseSwaggerUI();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
 
 app.UseAuthorization();
 
