@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CompanyStructure.Data;
+using AutoMapper;
+using CompanyStructure.Models.Role;
 
 namespace CompanyStructure.Controllers
 {
@@ -14,20 +16,24 @@ namespace CompanyStructure.Controllers
     public class RolesController : ControllerBase
     {
         private readonly CompanyDBContext _context;
+        private readonly IMapper _mapper;
 
-        public RolesController(CompanyDBContext context)
+        public RolesController(CompanyDBContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Role>>> GetRoles()
+        public async Task<ActionResult<IEnumerable<RoleReadOnlyDto>>> GetRoles()
         {
-            return await _context.Roles.ToListAsync();
+            var roles = await _context.Roles.ToListAsync();
+            var rolesDtos = _mapper.Map<IEnumerable<RoleReadOnlyDto>>(roles);
+            return Ok(rolesDtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Role>> GetRole(int id)
+        public async Task<ActionResult<RoleReadOnlyDto>> GetRole(int id)
         {
             var role = await _context.Roles.FindAsync(id);
 
@@ -36,17 +42,27 @@ namespace CompanyStructure.Controllers
                 return NotFound();
             }
 
-            return role;
+            var roleDto = _mapper.Map<RoleReadOnlyDto>(role);
+
+            return roleDto;
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutRole(int id, Role role)
+        public async Task<IActionResult> PutRole(int id, RoleUpdateDto roleDto)
         {
-            if (id != role.Id)
+            if (id != roleDto.Id)
             {
                 return BadRequest();
             }
 
+            var role = await _context.Roles.FindAsync(id);
+
+            if (role == null)
+            {
+                return NotFound();
+            }
+
+            _mapper.Map(roleDto, role);
             _context.Entry(role).State = EntityState.Modified;
 
             try
@@ -69,21 +85,19 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Role>> PostRole(Role role)
+        public async Task<ActionResult<RoleCreateDto>> PostRole(RoleCreateDto roleDto)
         {
-            _context.Roles.Add(role);
+
+            var role = _mapper.Map<Role>(roleDto);
+            await _context.Roles.AddAsync(role);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetRole", new { id = role.Id }, role);
+            return CreatedAtAction(nameof(GetRole), new { id = role.Id }, role);
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRole(int id)
         {
-            if (_context.Roles == null)
-            {
-                return NotFound();
-            }
             var role = await _context.Roles.FindAsync(id);
             if (role == null)
             {

@@ -9,6 +9,7 @@ using CompanyStructure.Data;
 using CompanyStructure.Models.Employee;
 using AutoMapper;
 using System.Collections;
+using AutoMapper.QueryableExtensions;
 
 namespace CompanyStructure.Controllers
 {
@@ -28,22 +29,26 @@ namespace CompanyStructure.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeReadOnlyDto>>> GetEmployees()
         {
-            var employees = await _context.Employees.ToListAsync();
-            var employeeDtos = _mapper.Map<IEnumerable<EmployeeReadOnlyDto>>(employees);
+            var employeeDtos = await _context.Employees
+                .Include(q => q.Role)
+                .ProjectTo<EmployeeReadOnlyDto>(_mapper.ConfigurationProvider)
+                .ToListAsync();
             return Ok(employeeDtos);
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<EmployeeReadOnlyDto>> GetEmployee(int id)
         {
-            var employee = await _context.Employees.FindAsync(id);
+            var employeeDto = await _context.Employees
+                .Include(q => q.Role)
+                .ProjectTo<EmployeeReadOnlyDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(q => q.Id == id);
 
-            if (employee == null)
+            if (employeeDto == null)
             {
                 return NotFound();
             }
 
-            var employeeDto = _mapper.Map<EmployeeReadOnlyDto>(employee);
             return Ok(employeeDto);
         }
 
@@ -87,7 +92,7 @@ namespace CompanyStructure.Controllers
         [HttpPost]
         public async Task<ActionResult<EmployeeCreateDto>> PostEmployee(EmployeeCreateDto employeeDto)
         {
-            Employee employee = _mapper.Map<Employee>(employeeDto);
+            var employee = _mapper.Map<Employee>(employeeDto);
             await _context.Employees.AddAsync(employee);
             await _context.SaveChangesAsync();
 

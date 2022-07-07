@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace CompanyStructure.Data
 {
+    //TODO: more details
     public partial class Employee
     {
         public int Id { get; set; }
