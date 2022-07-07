@@ -1,14 +1,15 @@
 using Microsoft.EntityFrameworkCore;
-using CompanyStructure.Models;
 using Serilog;
+using CompanyStructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var connString = builder.Configuration.GetConnectionString("CompanyDbConnection");
+builder.Services.AddDbContext<CompanyDBContext>(opt =>
+    opt.UseSqlServer(connString));
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<EmployeeContext>(opt =>
-    opt.UseSqlServer("Server=.;Database=Company;MultipleActiveResultsSets=True;Trusted_Connection=True;"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
