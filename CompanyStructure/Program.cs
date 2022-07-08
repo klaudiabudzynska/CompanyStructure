@@ -3,6 +3,8 @@ using Serilog;
 using CompanyStructure.Data;
 using CompanyStructure.Configurations;
 using Microsoft.AspNetCore.Identity;
+using CompanyStructure.Contract;
+using CompanyStructure.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +31,8 @@ builder.Services.AddCors(opt =>
         b => b.AllowAnyMethod()
         .AllowAnyHeader()
         .AllowAnyOrigin()));
+
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
 var app = builder.Build();
 
