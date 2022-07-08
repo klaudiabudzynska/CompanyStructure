@@ -2,6 +2,7 @@
 using CompanyStructure.Data;
 using CompanyStructure.Models.Employee;
 using CompanyStructure.Models.Role;
+using CompanyStructure.Models.Users;
 
 namespace CompanyStructure.Configurations
 {
@@ -18,6 +19,8 @@ namespace CompanyStructure.Configurations
             CreateMap<EmployeeRoleReadOnlyDto, EmployeeRole>().ReverseMap();
             CreateMap<EmployeeRoleCreateDto, EmployeeRole>().ReverseMap();
             CreateMap<EmployeeRoleUpdateDto, EmployeeRole>().ReverseMap();
+
+            CreateMap<ApiUserDto, ApiUser>().ReverseMap();
         }
     }
 }
