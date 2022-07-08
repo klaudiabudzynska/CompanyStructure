@@ -3,7 +3,7 @@ using CompanyStructure.Models.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CompanyStructure.Data.Configurations
+namespace CompanyStructure.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -24,14 +24,14 @@ namespace CompanyStructure.Data.Configurations
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> Login([FromBody] LoginDto loginDto)
         {
-            var isValidUser = await _authManager.Login(loginDto);
+            var authResponse = await _authManager.Login(loginDto);
 
-            if (isValidUser)
+            if (authResponse == null)
             {
                 return Unauthorized();
             }
 
-            return Ok();
+            return Ok(authResponse);
         }
 
         [HttpPost]

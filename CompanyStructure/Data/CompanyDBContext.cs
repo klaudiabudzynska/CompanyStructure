@@ -12,8 +12,6 @@ namespace CompanyStructure.Data
         public CompanyDBContext(DbContextOptions<CompanyDBContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
-            Database.EnsureCreated();
         }
 
         public virtual DbSet<Employee> Employees { get; set; } = null!;
