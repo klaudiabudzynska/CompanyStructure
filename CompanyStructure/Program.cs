@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 using CompanyStructure.Data;
 using CompanyStructure.Configurations;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,10 @@ builder.Services.AddDbContext<CompanyDBContext>(opt =>
     opt.UseSqlServer(connString));
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
+
+builder.Services.AddIdentityCore<ApiUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<CompanyDBContext>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

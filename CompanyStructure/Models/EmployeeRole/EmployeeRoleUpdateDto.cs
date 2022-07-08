@@ -2,7 +2,7 @@
 
 namespace CompanyStructure.Models.Role
 {
-    public class RoleUpdateDto : BaseDto
+    public class EmployeeRoleUpdateDto : BaseDto
     {
         [Required]
         [StringLength(50)]

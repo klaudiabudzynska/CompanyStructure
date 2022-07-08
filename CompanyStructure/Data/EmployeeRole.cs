@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace CompanyStructure.Data
 {
-    public partial class Role
+    public partial class EmployeeRole
     {
-        public Role()
+        public EmployeeRole()
         {
             Employees = new HashSet<Employee>();
         }

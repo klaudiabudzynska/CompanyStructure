@@ -53,7 +53,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEmployee(int id, EmployeeUpdateDto employeeDto)
+        public async Task<IActionResult> EditEmployee(int id, EmployeeUpdateDto employeeDto)
         {
             if (id != employeeDto.Id)
             {
@@ -90,7 +90,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<EmployeeCreateDto>> PostEmployee(EmployeeCreateDto employeeDto)
+        public async Task<ActionResult<EmployeeCreateDto>> CreateEmployee(EmployeeCreateDto employeeDto)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
             await _context.Employees.AddAsync(employee);

@@ -2,7 +2,7 @@
 
 namespace CompanyStructure.Models.Role
 {
-    public class RoleCreateDto
+    public class EmployeeRoleCreateDto
     {
         [Required]
         [StringLength(50)]

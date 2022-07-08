@@ -15,9 +15,9 @@ namespace CompanyStructure.Configurations
             CreateMap<EmployeeCreateDto, Employee>().ReverseMap();
             CreateMap<EmployeeUpdateDto, Employee>().ReverseMap();
 
-            CreateMap<RoleReadOnlyDto, Role>().ReverseMap();
-            CreateMap<RoleCreateDto, Role>().ReverseMap();
-            CreateMap<RoleUpdateDto, Role>().ReverseMap();
+            CreateMap<EmployeeRoleReadOnlyDto, EmployeeRole>().ReverseMap();
+            CreateMap<EmployeeRoleCreateDto, EmployeeRole>().ReverseMap();
+            CreateMap<EmployeeRoleUpdateDto, EmployeeRole>().ReverseMap();
         }
     }
 }

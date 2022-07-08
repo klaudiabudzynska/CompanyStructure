@@ -1,6 +1,6 @@
 ﻿namespace CompanyStructure.Models.Role
 {
-    public class RoleReadOnlyDto : BaseDto
+    public class EmployeeRoleReadOnlyDto : BaseDto
     {
         public string Name { get; set; }
     }
