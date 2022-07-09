@@ -9,6 +9,8 @@ Baza danych stworzona lokalnie, o nazwie CompanyDB
 Api działa na porcie 7298 i 5298
 Dokumentacja requestów dostępna pod adresem /swagger/index.html
 
+Aplikacja do otwarcia w Visual Studio 2019 i wyżej
+
 ## Przykładowy request
 
 ```
