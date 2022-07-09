@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using CompanyStructure.Data.Configurations;
+﻿using CompanyStructure.Data.Configurations;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CompanyStructure.Data
 {

@@ -13,6 +13,7 @@ namespace CompanyStructure.Models.Employee
         public string LastName { get; set; }
         [Required]
         public int RoleId { get; set; }
+        public int SupervisorId { get; set; }
 
     }
 }

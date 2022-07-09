@@ -31,7 +31,7 @@ namespace CompanyStructure.Repository
         {
             await _userManager.RemoveAuthenticationTokenAsync(_user, _loginProvider, _refreshToken);
             var newRefreshToken = await _userManager.GenerateUserTokenAsync(_user, _loginProvider, _refreshToken);
-            var result = await _userManager.SetAuthenticationTokenAsync(_user, _loginProvider, _refreshToken, newRefreshToken);
+            await _userManager.SetAuthenticationTokenAsync(_user, _loginProvider, _refreshToken, newRefreshToken);
 
             return newRefreshToken;
         }

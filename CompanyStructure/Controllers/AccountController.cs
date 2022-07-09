@@ -1,6 +1,5 @@
 ﻿using CompanyStructure.Contract;
 using CompanyStructure.Models.Users;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CompanyStructure.Controllers

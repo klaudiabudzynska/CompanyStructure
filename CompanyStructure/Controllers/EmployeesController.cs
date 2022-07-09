@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CompanyStructure.Data;
 using CompanyStructure.Models.Employee;
 using AutoMapper;
-using System.Collections;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
 
@@ -53,6 +47,23 @@ namespace CompanyStructure.Controllers
             }
 
             return Ok(employeeDto);
+        }
+
+        [HttpGet("{id}/supervisor")]
+        [Authorize]
+        public async Task<ActionResult<EmployeeReadOnlyDto>> GetEmployeeSupervisor(int id)
+        {
+            var employeeDto = await _context.Employees
+                .Include(q => q.Role)
+                .ProjectTo<EmployeeReadOnlyDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(q => q.Id == id);
+
+            if (employeeDto == null)
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(GetEmployee), new { id = employeeDto.SupervisorId });
         }
 
         [HttpPut("{id}")]
