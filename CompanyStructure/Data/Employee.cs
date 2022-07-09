@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace CompanyStructure.Data
+﻿namespace CompanyStructure.Data
 {
     //TODO: more details
     public partial class Employee
@@ -10,6 +7,7 @@ namespace CompanyStructure.Data
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public int? RoleId { get; set; }
+        public int? SupervisorId { get; set; }
 
         public virtual EmployeeRole? Role { get; set; }
 
