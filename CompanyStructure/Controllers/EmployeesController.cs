@@ -10,6 +10,7 @@ using CompanyStructure.Models.Employee;
 using AutoMapper;
 using System.Collections;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CompanyStructure.Controllers
 {
@@ -27,6 +28,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<EmployeeReadOnlyDto>>> GetEmployees()
         {
             var employeeDtos = await _context.Employees
@@ -37,6 +39,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<EmployeeReadOnlyDto>> GetEmployee(int id)
         {
             var employeeDto = await _context.Employees
@@ -53,6 +56,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditEmployee(int id, EmployeeUpdateDto employeeDto)
         {
             if (id != employeeDto.Id)
@@ -90,6 +94,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<EmployeeCreateDto>> CreateEmployee(EmployeeCreateDto employeeDto)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
@@ -100,6 +105,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployee(int id)
         {
             var employee = await _context.Employees.FindAsync(id);

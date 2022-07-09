@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using CompanyStructure.Data;
 using AutoMapper;
 using CompanyStructure.Models.Role;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CompanyStructure.Controllers
 {
@@ -25,6 +26,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<IEnumerable<EmployeeRoleReadOnlyDto>>> GetEmployeeRoles()
         {
             var roles = await _context.EmployeeRoles.ToListAsync();
@@ -33,6 +35,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<EmployeeRoleReadOnlyDto>> GetEmployeeRole(int id)
         {
             var role = await _context.EmployeeRoles.FindAsync(id);
@@ -48,6 +51,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditEmployeeRole(int id, EmployeeRoleUpdateDto roleDto)
         {
             if (id != roleDto.Id)
@@ -85,6 +89,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<EmployeeRoleCreateDto>> CreateEmployeeRole(EmployeeRoleCreateDto roleDto)
         {
 
@@ -96,6 +101,7 @@ namespace CompanyStructure.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteEmployeeRole(int id)
         {
             var role = await _context.EmployeeRoles.FindAsync(id);

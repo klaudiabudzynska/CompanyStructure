@@ -20,7 +20,9 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddIdentityCore<ApiUser>()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<CompanyDBContext>();
+    .AddTokenProvider<DataProtectorTokenProvider<ApiUser>>("CompanyStructureApi")
+    .AddEntityFrameworkStores<CompanyDBContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -69,9 +71,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
 
-app.UseAuthorization();
-
 app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.MapControllers();
 
