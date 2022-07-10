@@ -23,3 +23,6 @@ curl -X 'POST' \
   "password": "stringst"
 }'
 ```
+## Domena
+
+https://companystructureapi-klaudiabudzynska.azurewebsites.net/swagger/index.html
