@@ -11,7 +11,6 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 var connString = builder.Configuration.GetConnectionString("CompanyDbConnection");
 builder.Services.AddDbContext<CompanyDBContext>(opt =>
     opt.UseSqlServer(connString));
@@ -61,11 +60,11 @@ builder.Services.AddAuthentication(opt =>
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 
